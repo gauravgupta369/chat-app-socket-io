@@ -3,7 +3,6 @@ const express = require('express');
 const app = express();
 const socketIO = require('socket.io');
 const http = require('http');
-const {generateMessage, generateLocationMessage} = require('./utils/message');
 
 const publicPath = path.join(__dirname, '../public');
 
@@ -13,24 +12,21 @@ const server = http.createServer(app);
 
 const io = socketIO(server)
 
+// indivisual socket of users
 io.on('connection', (socket) => {
     console.log('New User Connected!');
     socket.on('disconnect', () => {
         console.log('User Disconnected');
     });
 
-    socket.broadcast.emit('newMessage',  generateMessage('Admin', 'New User Joined'));
-
-    socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chatApp.'));
-
-    socket.on('createMessage', (message) => {
-        console.log(message);
-        io.emit('newMessage', generateMessage(message.from, message.text));
+    socket.emit('newEmail', {
+        from: 'gaurav.gupta@voicetree.co',
+        text: 'This is a dummy email',
+        createdAt: 'today'
     });
 
-    socket.on('createLocationMessage', (position, callback) => {
-        io.emit('newLocationMessage', generateLocationMessage('Admin', position.latitude, position.longitude));
-        callback();
+    socket.on('createEmail', (newEmail) => {
+        console.log('New Email ', newEmail);
     });
 });
 
