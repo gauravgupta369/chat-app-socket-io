@@ -1,7 +1,15 @@
 var socket = io();
 
 socket.on('connect', () => {
-    console.log('Connected to server');
+    var param = $.deparam(window.location.search);
+    socket.emit('join', param, function(err) {
+        if(err) {
+            alert(err);
+            window.location.href = '/'; 
+        } else {
+
+        }
+    });
 });
 
 socket.on('disconnect', () => {
@@ -23,12 +31,33 @@ socket.on('newMessage', function (message) {
 
 });
 
+socket.on('newLocationMessage', function(message) {
+    console.log(message);
+
+    var locationTemplate = $('#location-message-template').html();
+    var html = Mustache.render(locationTemplate, {
+        url: message.url,
+        from: message.from,
+        createdAt: message.createdAt
+    })
+    $('#messages').append(html);
+    scrollToBottom();
+});
+
+socket.on('updateUserList', function(userList) {
+    var ol = $('<ol></ol>');
+    userList.forEach(user => {
+        ol.append($('<li></li>').text(user));
+    });
+
+    $('#users').html(ol);
+});
+
 $('#message-form').on('submit', function(e) {
     e.preventDefault();
     socket.emit('createMessage', {
-        from: 'Gaurav',
         text: $('#message').val()
-    });
+    }, function() {alert('Invalid Message!')} );
     $('#message').val('');
 });
 
@@ -55,20 +84,6 @@ locationButton.on('click', function() {
         alert('Unable to fetch location');
     })
 });
-
-socket.on('newLocationMessage', function(message) {
-    console.log(message);
-
-    var locationTemplate = $('#location-message-template').html();
-    var html = Mustache.render(locationTemplate, {
-        url: message.url,
-        from: message.from,
-        createdAt: message.createdAt
-    })
-    $('#messages').append(html);
-    scrollToBottom();
-});
-
 
 function scrollToBottom() {
     var messages = $('#messages');
