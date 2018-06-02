@@ -19,17 +19,23 @@ const users = new Users();
 io.on('connection', (socket) => {
     
     socket.on('join', (data, callback) => {
-        if (!isRealString(data.name) || !isRealString(data.room)) {
+        let name = data.name.toLowerCase().replace(/\s/g,'');
+        let room = data.room.toLowerCase();
+
+        if (!isRealString(name) || !isRealString(room)) {
             return callback('Invalid Data!');
         }
-        data.room = data.room.toLowerCase();
-        socket.join(data.room);
 
+        if (users.checkUserName(name, room)) {
+            return callback('urer with same username is already in the room.');
+        }
+
+        socket.join(room);
         users.removeUser(socket.id);
-        users.addUser(socket.id, data.name, data.room);
+        users.addUser(socket.id, name, room);
 
-        io.to(data.room).emit('updateUserList', users.getUserList(data.room));
-        socket.broadcast.to(data.room).emit('newMessage',  generateMessage('Admin', `${data.name} has Joined.`));
+        io.to(room).emit('updateUserList', users.getUserList(room));
+        socket.broadcast.to(room).emit('newMessage',  generateMessage('Admin', `${name} has Joined.`));
         socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chatApp.'));
         callback();
     });
@@ -54,8 +60,10 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         let user = users.removeUser(socket.id);
-        io.to(user.room).emit('updateUserList', users.getUserList(user.room));
-        socket.broadcast.to(user.room).emit('newMessage', generateMessage('Admin', `${user.name} has left.`));
+        if (user) {
+            io.to(user.room).emit('updateUserList', users.getUserList(user.room));
+            socket.broadcast.to(user.room).emit('newMessage', generateMessage('Admin', `${user.name} has left.`));
+        }
     });
 
 });

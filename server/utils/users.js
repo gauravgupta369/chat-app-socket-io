@@ -19,6 +19,18 @@ class Users {
     getUser (id) {
         return this.users.filter((user) => user.id === id)[0];
     }
+
+    checkUserName(name, room) {
+        let userList = this.getUserList(room);
+        if (userList && userList.length > 0) {
+            let user = userList.filter((n) => n == name)[0];
+            if (user) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     getUserList (room) {
         var users = this.users.filter((user) => user.room === room);
         var namesArray = users.map((user) => user.name);
