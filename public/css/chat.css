@@ -167,3 +167,28 @@ body {
   margin-left: 2%;
   margin-right: 10px;
 }
+
+
+@media only screen and (max-width: 600px) {
+  .people-list{
+    display: none;
+  }
+
+  .chat {
+    width: 100%;
+  }
+
+  #message {
+    width: 100%;
+  }
+
+  .chat .chat-message button{
+    margin-top: 20px;
+    margin-left:0px;
+    margin-right: 20px;
+  }
+
+  .chat .chat-history{
+    height: 78vh;
+  }
+}
