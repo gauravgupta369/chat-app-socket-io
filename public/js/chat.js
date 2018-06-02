@@ -20,7 +20,12 @@ socket.on('disconnect', () => {
 socket.on('newMessage', function (message) {
     console.log('newMessage', message);
 
-    var messageTemplate = $('#message-template').html();
+    if (socket.id == message.id) {
+        var messageTemplate = $('#message-response-template').html();
+    } else {
+        var messageTemplate = $('#message-template').html();
+    }
+    
     var html = Mustache.render(messageTemplate, {
         text: message.text,
         from: message.from,
@@ -34,7 +39,12 @@ socket.on('newMessage', function (message) {
 socket.on('newLocationMessage', function(message) {
     console.log(message);
 
-    var locationTemplate = $('#location-message-template').html();
+    if (socket.id == message.id) {
+        var locationTemplate = $('#location-message-response-template').html();
+    } else {
+        var locationTemplate = $('#location-message-template').html();
+    }
+   
     var html = Mustache.render(locationTemplate, {
         url: message.url,
         from: message.from,
@@ -45,12 +55,15 @@ socket.on('newLocationMessage', function(message) {
 });
 
 socket.on('updateUserList', function(userList) {
-    var ol = $('<ol></ol>');
+    var ul = $("<ul class='list'></ul>");
+    var userListTemplate = $('#user-list-template').html();
     userList.forEach(user => {
-        ol.append($('<li></li>').text(user));
+        var html = Mustache.render(userListTemplate, {
+            user:user
+        })
+        ul.append(html);
     });
-
-    $('#users').html(ol);
+    $('#users').html(ul);
 });
 
 $('#message-form').on('submit', function(e) {
@@ -98,4 +111,10 @@ function scrollToBottom() {
     if (scrollTop + clientHeight + lastMessageHeight + newMessageHeight + 30 >= scrollHeight) {
         messages.scrollTop(scrollHeight);
     }
+}
+
+
+function capitalize(s)
+{
+    return s[0].toUpperCase() + s.slice(1);
 }

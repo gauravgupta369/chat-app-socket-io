@@ -3,7 +3,7 @@ const express = require('express');
 const app = express();
 const socketIO = require('socket.io');
 const http = require('http');
-const {generateMessage, generateLocationMessage} = require('./utils/message');
+const {generateMessage, generateLocationMessage, capitalize} = require('./utils/message');
 const {isRealString} = require('./utils/validation');
 const {Users} = require('./utils/users');
 const publicPath = path.join(__dirname, '../public');
@@ -19,7 +19,7 @@ const users = new Users();
 io.on('connection', (socket) => {
     
     socket.on('join', (data, callback) => {
-        let name = data.name.toLowerCase().replace(/\s/g,'');
+        let name = capitalize(data.name.toLowerCase().replace(/\s/g,''));
         let room = data.room.toLowerCase();
 
         if (!isRealString(name) || !isRealString(room)) {
@@ -45,7 +45,7 @@ io.on('connection', (socket) => {
         let user = users.getUser(socket.id);
         console.log(user);
         if(user && isRealString(message.text)) {
-            return io.to(user.room).emit('newMessage', generateMessage(user.name, message.text));
+            return io.to(user.room).emit('newMessage', generateMessage(user.name, message.text, socket.id));
         }
         callback();
     });
@@ -53,7 +53,7 @@ io.on('connection', (socket) => {
     socket.on('createLocationMessage', (position, callback) => {
         let user = users.getUser(socket.id);
         if (user) {
-            io.to(user.room).emit('newLocationMessage', generateLocationMessage('Admin', position.latitude, position.longitude));
+            io.to(user.room).emit('newLocationMessage', generateLocationMessage('Admin', position.latitude, position.longitude, socket.id));
         }
         callback();
     });
