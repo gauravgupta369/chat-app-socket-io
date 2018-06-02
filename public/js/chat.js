@@ -83,7 +83,7 @@ locationButton.on('click', function() {
     }
 
     var sendLocation = $('#send-location');
-    sendLocation.text('Sending location...');
+    sendLocation.text('Sending ...');
     sendLocation.attr('disabled', 'disabled');
     navigator.geolocation.getCurrentPosition(function(position) {
         socket.emit('createLocationMessage', {

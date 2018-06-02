@@ -23,13 +23,13 @@ body {
   float: left;
 }
 .people-list p {
-  padding: 20px;
+  padding: 14px;
   margin-top: 20px;
   margin-left: 5%;
   font-weight: bold;
   color:#999;
   width: 90%;
-  font-size: 30px;
+  font-size: 24px;
 }
 
 .people-list ul {
@@ -40,7 +40,7 @@ body {
   padding-bottom: 20px;
   font-weight: bold;
   color: #999;
-  font-size: 20px;
+  font-size: 18px;
   padding-left: 5%;
 }
 
@@ -58,10 +58,10 @@ body {
   padding: 30px 30px 20px;
   border-bottom: 2px solid white;
   overflow-y: scroll;
-  height: 88vh;
+  height: 86vh;
 }
 .chat .chat-history .message-data {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 .chat .chat-history .message-data-time {
   color: #a8aab1;
@@ -69,11 +69,11 @@ body {
 }
 .chat .chat-history .message {
   color: white;
-  padding: 18px 20px;
+  padding: 10px 20px;
   line-height: 26px;
   font-size: 16px;
   border-radius: 7px;
-  margin-bottom: 30px;
+  margin-bottom: 12px;
   width: 90%;
   position: relative;
 }
@@ -103,15 +103,7 @@ body {
 .chat .chat-message {
   padding: 30px;
 }
-.chat .chat-message textarea {
-  width: 100%;
-  border: none;
-  padding: 10px 20px;
-  font: 14px/22px "Lato", Arial, sans-serif;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  resize: none;
-}
+
 .chat .chat-message .fa-file-o, .chat .chat-message .fa-file-image-o {
   font-size: 16px;
   color: gray;
@@ -125,7 +117,6 @@ body {
   text-transform: uppercase;
   border: none;
   cursor: pointer;
-  font-weight: bold;
   padding: 10px;
   border-radius: 4px;
 }
@@ -164,15 +155,15 @@ body {
 
 #message {
   float: left;
-  width: 78%;
+  width: 74%;
   border-radius: 5px;
   border: 0px;
-  padding: 14px;
+  padding: 13px;
   color: #999;
 }
 
 
 #submit{
   margin-left: 2%;
-  margin-right: 30px;
+  margin-right: 10px;
 }
