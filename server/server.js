@@ -22,6 +22,7 @@ io.on('connection', (socket) => {
         if (!isRealString(data.name) || !isRealString(data.room)) {
             return callback('Invalid Data!');
         }
+        data.room = data.room.toLowerCase();
         socket.join(data.room);
 
         users.removeUser(socket.id);
