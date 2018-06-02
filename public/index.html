@@ -15,8 +15,8 @@
         <h3>Join a Chat<h3>
       </div>
       <div class="form-field">
-        <label>Display name</label>
-        <input type="text" name="name" autofocus/>
+        <label>User name</label>
+        <input type="text" name="name" id="name" autofocus/>
       </div>
       <div class="form-field">
         <label>Room name</label>
@@ -27,6 +27,14 @@
       </div>
     </form>
   </div>
+
+  <script src="js/libs/jquery-3.3.1.min.js"></script>
+  <script>
+      $('#name').on('keyup', function() {
+            var name_text = $('#name').val().replace(/\s/g,'');
+            $('#name').val(name_text);
+        });
+  </script>
 </body>
 
 </html>
